@@ -5,13 +5,88 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
  
+void highschool(double **a, double **b, double **c, int tam);
 void strassen(double **a, double **b, double **c, int tam);
 void sum(double **a, double **b, double **result, int tam);
 void subtract(double **a, double **b, double **result, int tam);
 double **allocate_real_matrix(int tam, int random);
 double **free_real_matrix(double **v, int tam);
  
+int main() 
+{
+    int i,j,k;
+    int x,y;
+    double **a, **b;
+    double **st;
+    double **hs;
+ 
+    int n;
+    int max_n = 10;
+    int iter = 100;
+    int random = 1;
+    double start;
+
+    for( i=8; i<=max_n; i++ ) {
+        n = 1 << i;
+        st = allocate_real_matrix(n, 0);
+        hs = allocate_real_matrix(n, 0);
+        for( k=0; k < iter; k++ ) {
+
+            a = allocate_real_matrix(n, 1);
+            b = allocate_real_matrix(n, 1);
+
+            start = clock();
+            highschool(a, b, hs, n);   
+            printf ( "HS,%d,%f\n", n, (clock() - start) / CLOCKS_PER_SEC );
+
+            start = clock();
+            strassen(a, b, st, n);   
+            printf ( "ST,%d,%f\n", n, (clock() - start) / CLOCKS_PER_SEC );
+            
+            /* //--- PRINT OUT ARRAYS
+                for( x = 0; x < n; x++ ) {
+                    for( y = 0; y < n; y++ ) {
+                        printf(" %3.0f ", st[x][y]);
+                    }
+                    printf("\n");
+                }
+                printf("---------------------\n");
+                for( x = 0; x < n; x++ ) {
+                    for( y = 0; y < n; y++ ) {
+                        printf(" %3.0f ", hs[x][y]);
+                    }
+                    printf("\n");
+                }
+                printf("xxxxxxxxxxxxxxxxxxxxx\n");
+            */
+
+            free_real_matrix(a, n);
+            free_real_matrix(b, n);
+        }
+        free_real_matrix(st, n);
+        free_real_matrix(hs, n);
+    }
+    return 0;
+}
+
+void highschool(double **a, double **b, double **c, int tam) {
+    if (tam == 1) {
+        c[0][0] = a[0][0] * b[0][0];
+        return;
+    }
+    int i, j, k;
+    for( i=0; i<tam; i++ ) { 
+        for( j=0; j<tam; j++ ) { 
+            c[i][j] = 0;
+            for( k=0; k<tam; k++ ) {
+                c[i][j] = c[i][j] + a[i][k]*b[k][j];
+            }
+        }
+    }
+}
+
 void strassen(double **a, double **b, double **c, int tam) {
  
     // trivial case: when the matrix is 1 X 1:
@@ -249,45 +324,3 @@ double **free_real_matrix(double **v, int tam) {
     return (NULL);   //returns a null pointer /
 }
 
-int main() 
-{
-    int i,j,k;
-    double **a, **b, **c;
- 
-    int n = 1;
-    int max_n = 10;
-    int iter = 117;
-    int random = 1;
-    double time;
-
-    for( n; n <= max_n; n++ ) {
-        printf ( " n = %d, ", n );
-
-        for( k=0; k < 100; k++ ) {
-
-            a = allocate_real_matrix(n, 1);
-            b = allocate_real_matrix(n, 1);
-            c = allocate_real_matrix(n, 0);
-            clock_t start = clock();
-            strassen(a, b, c, n);   
-            printf ( " %f ", ((double)clock() - start) / CLOCKS_PER_SEC );
-            
-            /*
-                for( i = 0; i < n; i++ ) {
-                    for( j = 0; j < n; j++ ) {
-                        printf(" %3.0f ", c[i][j]);
-                    }
-                    printf("\n");
-                }
-            */
-            free_real_matrix(a, n);
-            free_real_matrix(b, n);
-            free_real_matrix(c, n);
-        }
-        printf( "\n" );
-
-    }
-
-    
-    return 0;
-}
