@@ -28,7 +28,7 @@ int main()
     int random = 1;
     double start;
 
-    for( i=8; i<=max_n; i++ ) {
+    for( i=0; i<=max_n; i++ ) {
         n = 1 << i;
         st = allocate_real_matrix(n, 0);
         hs = allocate_real_matrix(n, 0);
