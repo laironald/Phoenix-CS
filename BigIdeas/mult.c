@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
  
 void highschool(double **a, double **b, double **c, int tam);
 void strassen(double **a, double **b, double **c, int tam);
