@@ -22,12 +22,13 @@ int main()
     double **hs;
  
     int n;
-    int max_n = 10;
+    int min_n = 3;
+    int max_n = 15;
     int iter = 100;
     int random = 1;
     double start;
 
-    for( i=0; i<=max_n; i++ ) {
+    for( i=min_n; i<=max_n; i++ ) {
         n = 1 << i;
         st = allocate_real_matrix(n, 0);
         hs = allocate_real_matrix(n, 0);
@@ -38,11 +39,11 @@ int main()
 
             start = clock();
             highschool(a, b, hs, n);   
-            printf ( "HS,%d,%f\n", n, (clock() - start) / CLOCKS_PER_SEC );
+            printf ( "HS,%d,%f\n", n, clock() - start );
 
             start = clock();
             strassen(a, b, st, n);   
-            printf ( "ST,%d,%f\n", n, (clock() - start) / CLOCKS_PER_SEC );
+            printf ( "ST,%d,%f\n", n, clock() - start );
             
             /* //--- PRINT OUT ARRAYS
                 for( x = 0; x < n; x++ ) {
