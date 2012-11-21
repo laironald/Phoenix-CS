@@ -40,13 +40,11 @@ for n in range(2, 33):
   c1 = mult_matrix(a,b)
   c2 = make_bug(c1)
   for i in xrange(100):
-    k = 0
-    while True:
+    file.write("{n},{i}")
+    for k in xrange(10):
       k = k + 1
       r = [[[-1,1][random.randint(0,1)]] for j in xrange(len(a))]
       n1 = mult_matrix(c1, r)
       n2 = mult_matrix(c2, r)
-      if n1 != n2:
-        file.write("{n},{i},{k}\n".format(n=n, i=i, k=k))
-        break
-
+      file.write(",{k}".format(k=1*(n1!=n2)))
+    file.write("\n")
