@@ -35,15 +35,14 @@ def make_bug(a):
 
 file = open("mult3.out", "wb")
 for n in range(2, 33):
-  a = create_matrix(n)
-  b = create_matrix(n)
-  c1 = mult_matrix(a,b)
-  c2 = make_bug(c1)
   for i in xrange(100):
-    file.write("{n},{i}")
+    a = create_matrix(n)
+    b = create_matrix(n)
+    c1 = mult_matrix(a,b)
+    c2 = make_bug(c1)
+    file.write("{n},{i}".format(n=n, i=i))
     for k in xrange(10):
-      k = k + 1
-      r = [[[-1,1][random.randint(0,1)]] for j in xrange(len(a))]
+      r = [[[-1,1][random.randint(0,1)]] for x in xrange(len(a))]
       n1 = mult_matrix(c1, r)
       n2 = mult_matrix(c2, r)
       file.write(",{k}".format(k=1*(n1!=n2)))
